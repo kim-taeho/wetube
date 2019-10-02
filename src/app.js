@@ -9,11 +9,14 @@ import videoRouter from "./routers/videoRouter";
 import globalRouter from "./routers/globalRouter";
 import routes from "./routers/routes";
 import { localMiddleware } from "./middlewares/middlewares";
+
 const app = express();
 
 // middelware
 app.use(helemt());
-app.set('view engine', "pug");
+//app.engine('pug', require('pug').__express);
+app.set('view engine', 'pug');
+app.set('views', './src/views');
 app.use("/uploads", express.static("uploads"));
 app.use(cookieParser());
 app.use(bodyParser.json());

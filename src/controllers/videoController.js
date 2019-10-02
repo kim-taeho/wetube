@@ -15,7 +15,7 @@ export const home = async (req, res) => {
         console.log(error);
         res.render("home", {
             pageTitle: "Home",
-            videdos: []
+            videos: []
         });
     }
 }
