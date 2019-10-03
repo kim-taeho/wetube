@@ -1,11 +1,14 @@
-extends layouts/main.pug
-include mixins/videoBlock
+extends layouts/main
 
-    block content
-        .form-container
-            form(action=`/videos${routes.upload}`, method="post", enctype="multipart/form-data")
+block content
+    .form-container
+        .record-container#jsRecordContainer
+            video#jsVideoPreview
+            button#jsRecordBtn Start Recording
+        form(action=`/videos${routes.upload}`, method="post", enctype="multipart/form-data")
+            div.fileUpload
                 label(for="file") Video File
-                input(type="file", id="file", name="videoName", required=true, accept="video/*")
-                input(type="text", placeholder="Title", name="title", required=true)
-                textarea(name="description", placeholder="Description")
-                input(type="submit", value="Upload Video")
+                input(type="file", id="file", name="videoFile", required=true, accept="video/*")
+            input(type="text", placeholder="Title", name="title", required=true)
+            textarea(name="description", placeholder="Description", required=true)
+            input(type="submit", value="Upload Video")

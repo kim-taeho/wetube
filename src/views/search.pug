@@ -2,9 +2,9 @@ extends layouts/main.pug
 include mixins/videoBlock
 
 block content
-    .serch_header
+    .serch__header
         h3 Searchin for #{searchingBy}
-    .search_videos
+    .search__videos
         if videos.length === 0
             h5 No Videos Found
         each item in videos
