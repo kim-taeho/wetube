@@ -18,6 +18,10 @@ const VIDEO_DETAIL = "/:id"; // :는 변하는 값을 의미함 그냥 id는 tex
 const EDIT_VIDEO = "/:id/edit"; // video/edit/1
 const DELETE_VIDEO = "/:id/delete";
 
+// GITHHUB
+const GITHUB = "/auth/github";
+const GITHUB_CALLBACK = "/auth/github/callback"
+
 const routes = {
     home: HOME,
     join: JOIN,
@@ -56,7 +60,9 @@ const routes = {
         } else {
             return DELETE_VIDEO;
         }
-    }
+    },
+    github: GITHUB,
+    githubCallback: GITHUB_CALLBACK
 };
 
 export default routes;
