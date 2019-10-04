@@ -63,8 +63,11 @@ export const postUpload = async (req, res) => {
     const newVideo = await Video.create({
         fileURL: path,
         title: title,
-        description: description
+        description: description,
+        creator: req.user.id
     });
+    req.user.videos.push(newVideo.id);
+    req.user.save();
     // To Do : upload and save video
     res.redirect(routes.videoDetail(newVideo.id));
 }
@@ -76,7 +79,7 @@ export const videoDetail = async (req, res) => {
         }
     } = req; // req.params.id와 같음 
     try {
-        const video = await Video.findById(id);
+        const video = await Video.findById(id).populate("creator");
         // Video는 mongoose파일 mongoose의 기능
         res.render("videoDetail", {
             pageTitle: video.title,
