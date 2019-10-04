@@ -27,5 +27,5 @@ export const onlyPublic = (req, res, next) => {
     }
   };
 
-export const uploadVideo = multerVideo.single("videoName");
+export const uploadVideo = multerVideo.single("videoFile");
 export const uploadAvatar = multerAvatar.single("avatar");
