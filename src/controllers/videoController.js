@@ -1,5 +1,6 @@
 import routes from "../routers/routes";
 import Video from "../models/Video";
+import User from "../models/User";
 
 export const home = async (req, res) => {
     try {
@@ -59,17 +60,23 @@ export const postUpload = async (req, res) => {
             path
         }
     } = req;
-    //console.log(req);
+    //console.log(req.user._id);
     const newVideo = await Video.create({
         fileURL: path,
         title: title,
         description: description,
-        creator: req.user.id
+        creator: req.user._id
     });
-    req.user.videos.push(newVideo.id);
-    req.user.save();
+    //console.log(newVideo);
+    //console.log(req.user);
+    const user = await User.findOne( { email : req.user.email} );
+    user.videos.push(newVideo._id);
+    user.save();
+    //req.user.videos.push(newVideo._id);
+    //console.log(req.user);
+    //req.user.save(function(){});
     // To Do : upload and save video
-    res.redirect(routes.videoDetail(newVideo.id));
+    res.redirect(routes.videoDetail(newVideo._id));
 }
 
 export const videoDetail = async (req, res) => {
@@ -78,13 +85,17 @@ export const videoDetail = async (req, res) => {
             id
         }
     } = req; // req.params.id와 같음 
+    
     try {
         const video = await Video.findById(id).populate("creator");
+        //console.log(video);
         // Video는 mongoose파일 mongoose의 기능
         res.render("videoDetail", {
             pageTitle: video.title,
             video: video
         });
+        //console.log(req.user._id);
+        //console.log(video.creator._id);
     } catch (error) {
         res.redirect(routes.home);
     }
@@ -98,11 +109,17 @@ export const getEditVideo = async (req, res) => {
     } = req;
     //console.log(id);
     try {
+        console.log("Error at finById");
         const video = await Video.findById(id);
-        res.render("editVideo", {
-            pageTitle: `edit ${video.title}`,
-            video: video
-        });
+        console.log("Error after finish finById");
+        if(String(video.creator) !== req.user._id){
+            throw Error();
+        } else {
+            res.render("editVideo", {
+                pageTitle: `edit ${video.title}`,
+                video: video
+            });
+        }
     } catch (error) {
         res.redirect(routes.home);
     }

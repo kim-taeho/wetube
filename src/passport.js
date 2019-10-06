@@ -33,5 +33,6 @@ passport.use(
 // cookie에는 id만 담김 (default 설정)
 //passport.deserializeUser(User.deserializeUser());
 passport.serializeUser((user, done) => done(null, user));
+//passport.deserializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
 

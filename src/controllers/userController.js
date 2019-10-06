@@ -41,14 +41,18 @@ export const postLogin = passport.authenticate('local', {
     successRedirect: routes.home
 });
 
-export const githubLogin = passport.authenticate("github");
+export const githubLogin = passport.authenticate("github", {
+    successFlash: "Welcome",
+    failureFlash: "Can't log in at this time"
+  });
 
 export const githubLoginCallback = async (_, __, profile, cb) => {
-    const { _json: { id, avatar_url, name, email } } = profile;
+    const { _json: { id, avatar_url: avatarUrl, name, email } } = profile;
     try {
-        const user = await User.findOne({email: email});
+        const user = await User.findOne({email});
         if(user){
-            user.githubID = id,
+            // eslint-disable-next-line no-unused-expressions
+            user.githubID = id;
             user.save();
             return cb(null, user); // 1번째 매개변수는 error(null이니까 no error)
         } 
@@ -57,7 +61,7 @@ export const githubLoginCallback = async (_, __, profile, cb) => {
                     email,
                     name,
                     gihubID: id,
-                    avatarUrl: avatar_url
+                    avatarUrl
                 }
             );
             return cb(null, newUser);
@@ -72,6 +76,7 @@ export const postGithubLogin = (req, res) => {
 
 export const facebookLogin = passport.authenticate("facebook");
 
+// eslint-disable-next-line no-unused-vars
 export const facebookLoginCallback = (accessToken, refreshToken, profile, cb) => {
 
 }
@@ -90,15 +95,24 @@ export const users = (req, res) => {
     res.render("users", { pageTitle: "User" });
 }
 
-export const getMe = (req, res) => {
-    res.render("userDetail", { pageTitle: "User Detail", user: req.user });
+export const getMe = async (req, res) => {
+    try {
+    // eslint-disable-next-line no-underscore-dangle
+    const user = await User.findById(req.user._id).populate("videos");
+    // console.log("user by findOne", user);
+    // console.log("req.user", req.user);
+    res.render("userDetail", { pageTitle: "User Detail", user });
+    } catch(error){
+        res.redirect(routes.home);
+    }
 }
 
 export const userDetail = async (req, res) => {
     const { params: { id } } = req;
     try {
-        const user = await User.findById(id);
-        res.render("userDetail", { pageTitle: "User Detail", user: user });
+        const user = await User.findById(id).populate("videos");
+        // console.log(user);
+        res.render("userDetail", { pageTitle: "User Detail", user });
     } catch(error) {
         res.redirect(routes.home);
     }
@@ -113,19 +127,32 @@ export const postEditProfile = async (req, res) => {
         body: { name, email },
         file
     } = req;
-    //console.log(req.body.name);
-    //console.log(req.user._id);
-    const user = User.findById(req.user._id);
-    if(user) console.log(user);
+    // console.log(req.body.name);
+
+    // console.log("before change");
+    // const fi_user = await User.findOne( { _id: req.user._id });
+    // console.log(fi_user);
+
     try{
-        await User.findByIdAndUpdate(req.user._id, {
-            name: name, 
-            email: email,
+        await User.findOneAndUpdate({
+            // eslint-disable-next-line no-underscore-dangle
+            _id: req.user._id
+        },
+        {
+            name, 
+            email,
             avatarUrl: file ? file.path : req.user.avatarUrl
+        },
+        {
+            new: true
         });
+
+        // console.log("after change user");
+        // const fi_user = await User.findOne( { _id: req.user._id });
+        // console.log(fi_user);
         res.redirect(routes.me);
     }catch(error){
-        res.redirect(routes.editProfile);
+        res.redirect(`users/${routes.editProfile}`);
     }
 }
 
