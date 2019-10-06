@@ -12,7 +12,7 @@ const EDIT_PROFILE = "/edit-profile";
 const CHANGE_PASSWORD = "/change-password";
 const ME = "/me";
 
-//Videos
+// Videos
 const VIDEOS = "/videos";
 const UPLOAD = "/upload";
 const VIDEO_DETAIL = "/:id"; // :는 변하는 값을 의미함 그냥 id는 text의 id
@@ -23,9 +23,14 @@ const DELETE_VIDEO = "/:id/delete";
 const GITHUB = "/auth/github";
 const GITHUB_CALLBACK = "/auth/github/callback";
 
-//FACEBOOK
+// FACEBOOK
 const FB = "/auth/facebook";
 const FB_CALLBACK = "/auth/facebook/callback";
+
+// API
+const API = "/api";
+const REGISTER_VIEW = "/:id/view";
+const ADD_COMMENT = "/:id/comment";
 
 const routes = {
     home: HOME,
@@ -48,20 +53,21 @@ const routes = {
     videoDetail: (id) => {
         if(id) {
             return `/videos/${id}`;
-        } else {
+        } 
             return VIDEO_DETAIL;
-        }
+        
     },
     editVideo: (id) => {
         if(id) {
             return `/videos/${id}/edit`;
-        } else {
+        } 
             return EDIT_VIDEO;
-        }
+        
     },
     deleteVideo: (id) => {
         if(id) {
             return `/videos/${id}/delete`;
+        // eslint-disable-next-line no-else-return
         } else {
             return DELETE_VIDEO;
         }
@@ -70,7 +76,10 @@ const routes = {
     githubCallback: GITHUB_CALLBACK,
     me: ME,
     facebook: FB,
-    facebookCallback: FB_CALLBACK
+    facebookCallback: FB_CALLBACK,
+    api: API,
+    registerView:REGISTER_VIEW,
+    addComment:ADD_COMMENT
 };
 
 export default routes;

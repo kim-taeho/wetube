@@ -1,6 +1,6 @@
 import express from "express";
-import routes from "./routes";
 import passport from "passport";
+import routes from "./routes";
 import { home, search } from "../controllers/videoController";
 import { onlyPrivate, onlyPublic } from "../middlewares/middlewares";
 import { 
@@ -13,8 +13,6 @@ import {
     postGithubLogin,
     getMe,
     facebookLogin,
-    facebookLoginCallback,
-    facebookCallback,
     postFacebookLogin 
 } from "../controllers/userController";
 

@@ -1,12 +1,15 @@
 extends layouts/main.pug
-include mixins/videoBlock
+include mixins/videoPlayer
 
 block content
     .video-detail__container
+        +videoPlayer({
+            src: video.fileUrl
+        })
         .video__player
             video(src=`/${video.fileUrl}`)
             .video__info
-                if loggedUser._id === video.creator.id
+                if loggedUser && loggedUser._id === video.creator.id
                     a(href=routes.editVideo(video.id))
                         button Edit video
                 h5.video__title=video.title
@@ -23,3 +26,8 @@ block content
                     span.video__comment-number 1 comment
                 else
                     span.video__comment-number #{video.comments.length} comments 
+                form.add__comment#jsAddComment
+                    input(type="text", placeholder="Add a comment")
+                ul.video__comments-list
+                    each comment in video.comments
+                        span comment.text
