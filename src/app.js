@@ -1,4 +1,4 @@
-// const express = require("express");
+import "@babel/polyfill";
 import express from "express";
 import morgan from "morgan";
 import helemt from "helmet";
@@ -7,6 +7,7 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import passport from "passport";
 import session from "express-session";
+import path from "path";
 import MongoStore from "connect-mongo"
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
@@ -22,15 +23,17 @@ const CookieStore = MongoStore(session);
 // middelware
 app.use(helemt());
 app.set('view engine', 'pug');
-app.set('views', './src/views');
-app.use("/static", express.static("static"));
+// app.set('views', './src/views');
+app.set("views", path.join(__dirname, "views"));
+app.use("uploads", express.static("uploads"));
+app.use("/static", express.static(path.join(__dirname, "static")));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use(
     session({
-    secret: process.env.COOKIE_SECRET,
+    secret: process.env.COOKIE_SECRET, 
     resave: true,
     saveUninitialized: false,
     store: new CookieStore({ mongooseConnection: mongoose.connection })
