@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import routes from "../routers/routes";
 import Video from "../models/Video";
 import User from "../models/User";

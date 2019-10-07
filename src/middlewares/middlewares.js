@@ -1,8 +1,8 @@
 import multer from "multer";
 import routes from "../routers/routes";
 
-export const multerVideo = multer({ dest: "uploads/videos/" });
-export const multerAvatar = multer({ dest: "uploads/avatars/"});
+export const multerVideo = multer({ dest: "../uploads/videos/"});
+export const multerAvatar = multer({ dest: "../uploads/avatars/"});
 
 export const uploadVideo = multerVideo.single("videoFile");
 export const uploadAvatar = multerAvatar.single("avatar");

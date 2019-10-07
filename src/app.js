@@ -21,10 +21,8 @@ const app = express();
 const CookieStore = MongoStore(session);
 // middelware
 app.use(helemt());
-// app.engine('pug', require('pug').__express);
 app.set('view engine', 'pug');
 app.set('views', './src/views');
-// app.use("/uploads", express.static("uploads"));
 app.use("/static", express.static("static"));
 app.use(cookieParser());
 app.use(bodyParser.json());

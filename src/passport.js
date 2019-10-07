@@ -1,10 +1,9 @@
 import passport from "passport";
-import routes from "../src/routers/routes";
 import GithubStrategy from "passport-github";
 import FacebookStrategy from "passport-facebook";
 import User from "./models/User";
+import routes from "./routers/routes";
 import { githubLoginCallback, facebookLoginCallback } from "./controllers/userController";
-import { clearScreenDown } from "readline";
 
 passport.use(User.createStrategy());
 
@@ -29,10 +28,10 @@ passport.use(
         facebookLoginCallback
     )
 )
-//passport.serializeUser(User.serializeUser());
+// passport.serializeUser(User.serializeUser());
 // cookie에는 id만 담김 (default 설정)
-//passport.deserializeUser(User.deserializeUser());
+// passport.deserializeUser(User.deserializeUser());
 passport.serializeUser((user, done) => done(null, user));
-//passport.deserializeUser((user, done) => done(null, user));
+// passport.deserializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
 
